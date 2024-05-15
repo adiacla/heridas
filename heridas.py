@@ -84,9 +84,9 @@ st.write("""
 
 def import_and_predict(image_data, model, class_names):
     
-    image_data = image_data.resize((180, 180))
-    
+
     img_array  = tf.keras.utils.img_to_array(image_data)
+    img_array = tf.image.resize(image_data, [180, 180])
     img_array  = tf.expand_dims(image, 0) # Create a batch
 
     
