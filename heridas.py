@@ -86,19 +86,20 @@ def import_and_predict(image_data, model, class_names):
     
     image_data = image_data.resize((180, 180))
     
-    image1 = tf.keras.utils.img_to_array(image_data)
-    image1 = tf.expand_dims(image1, 0) # Create a batch
+    img_array  = tf.keras.utils.img_to_array(image_data)
+    img_array  = tf.expand_dims(image, 0) # Create a batch
 
     
-    # Predecir con el modelo
-    prediction = model.predict(image1)
+    # Hacer la predicción
+    predictions = model.predict(img_array)
+    print(predictions)
     # Interpretar la predicción
-    if prediction[0] > 0.5:
+    if predictions[0] > 0.5:
         class_name='Alterada'
     else:
         class_name='No_alterada'
     
-    return class_name, prediction[0] 
+    return class_name, predictions[0] 
 
 
 class_names = open("./model/clases.txt", "r").readlines()
