@@ -58,7 +58,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True) # Oculta el código CS
 
 #st.set_option('deprecation.showfileUploaderEncoding', False)
 
-#@st.cache_resource
+@st.cache_resource
 def load_model():
     model=tf.keras.models.load_model('./model/heridas_model.h5')
     return model
@@ -86,12 +86,12 @@ def import_and_predict(image_data, model, class_names):
     
     image_data = image_data.resize((180, 180))
     
-    image = tf.keras.utils.img_to_array(image_data)
-    image = tf.expand_dims(image, 0) # Create a batch
+    image1 = tf.keras.utils.img_to_array(image_data)
+    image1 = tf.expand_dims(image1, 0) # Create a batch
 
     
     # Predecir con el modelo
-    prediction = model.predict(image)
+    prediction = model.predict(image1)
     # Interpretar la predicción
     if prediction[0] > 0.5:
         class_name='Alterada'
