@@ -58,7 +58,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True) # Oculta el código CS
 
 #st.set_option('deprecation.showfileUploaderEncoding', False)
 
-@st.cache_resource
+#@st.cache_resource
 def load_model():
     model=tf.keras.models.load_model('./model/heridas_model.h5')
     return model
