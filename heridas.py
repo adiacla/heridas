@@ -60,7 +60,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True) # Oculta el código CS
 
 @st.cache_resource
 def load_model():
-    model=tf.keras.models.load_model('./model/heridas_model.h5')
+    model=tf.keras.models.load_model('model/heridas_model.h5')
     return model
 with st.spinner('Modelo está cargando..'):
     model=load_model()
