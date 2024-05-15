@@ -117,4 +117,5 @@ else:
         st.subheader(f"Estado de la sutura: {class_name}")
         st.text(f"Puntuación de confianza: {100 * np.max(score):.2f}%")
     else:
-        st.text(f"El estado de la sutura no pudo identificarse")
+        st.text(f"El estado de la sutura no se pudo identificar")
+        
