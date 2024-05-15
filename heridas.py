@@ -82,26 +82,6 @@ st.write("""
          )
 
 
-def import_and_predict(image_data, model, class_names):
-    
-
-    img_array  = tf.keras.utils.img_to_array(image_data)
-    img_array = tf.image.resize(image_data, [180, 180])
-    img_array  = tf.expand_dims(image, 0) # Create a batch
-
-    
-    # Hacer la predicción
-    predictions = model.predict(img_array)
-    print(predictions)
-    # Interpretar la predicción
-    if predictions[0] > 0.5:
-        class_name='Alterada'
-    else:
-        class_name='No_alterada'
-    
-    return class_name, predictions[0] 
-
-
 class_names = open("./model/clases.txt", "r").readlines()
 
 img_file_buffer = st.camera_input("Capture una foto referiblemente centrada en la herida o sutura")
@@ -112,13 +92,26 @@ else:
     st.image(image, use_column_width=True)
     
     # Realizar la predicción
-    class_name, score = import_and_predict(image, model, class_names)
+    img_array  = tf.keras.utils.img_to_array(image)
+    img_array = tf.image.resize(img_array, [180, 180])
+    img_array  = tf.expand_dims(img_array, 0) # Create a batch
+
+    
+    # Hacer la predicción
+    predictions = model.predict(img_array)
+    print(predictions)
+    # Interpretar la predicción
+    if predictions[0] > 0.5:
+        class_name='Alterada'
+    else:
+        class_name='No_alterada'
+
     
     # Mostrar el resultado
 
-    if np.max(score)>confianza:
+    if np.max(predictions[0])>confianza:
         st.header(f"Estado de la sutura: {class_name}")
-        st.subheader(f"Puntuación de confianza: {100 * np.max(score) :.2f}%")
+        st.subheader(f"Puntuación de confianza: {100 * np.max(predictions[0]) :.2f}%")
     else:
         st.subheader(f"Con el nivel de confianza {confianza:.2f}% no podria identificar el estado de la sutura")
         
