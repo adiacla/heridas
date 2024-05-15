@@ -60,7 +60,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True) # Oculta el código CS
 
 @st.cache_resource
 def load_model():
-    model=tf.keras.models.load_model('./heridas_model.h5')
+    model=tf.keras.models.load_model('./model/heridas_model.h5')
     return model
 with st.spinner('Modelo está cargando..'):
     model=load_model()
@@ -114,8 +114,8 @@ else:
     # Mostrar el resultado
 
     if np.max(score)>confianza:
-        st.subheader(f"Estado de la sutura: {class_name}")
-        st.text(f"Puntuación de confianza: {100 * np.max(score):.2f}%")
+        st.header(f"Estado de la sutura: {class_name}")
+        st.subheader(f"Puntuación de confianza: {100 * np.max(score):.2f}%")
     else:
-        st.text(f"El estado de la sutura no se pudo identificar")
+        st.subheader(f"El estado de la sutura no se pudo identificar")
         
