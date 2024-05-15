@@ -90,14 +90,13 @@ def import_and_predict(image_data, model, class_names):
 
     # Predecir con el modelo
     prediction = model.predict(img_array)
-    
+    print(prediction[0][0])
     # Interpretar la predicción
-    if prediction[0] > 0.5:
+    if prediction[0][0]> 0.5:
         class_name = 'Alterada'
     else:
         class_name = 'No_alterada'
-    
-    return class_name, prediction[0] 
+    return class_name, prediction[0][0] 
 
 
 class_names = open("./model/clases.txt", "r").readlines()
@@ -116,7 +115,7 @@ else:
 
     if np.max(score)>confianza:
         st.header(f"Estado de la sutura: {class_name}")
-        st.subheader(f"Puntuación de confianza: {100 * np.max(score) :.2f}%")
+        st.subheader(f"Puntuación de confianza: {100 * score :.2f}%")
     else:
         st.subheader(f"Con el nivel de confianza {confianza:.2f}% no podria identificar el estado de la sutura")
         
