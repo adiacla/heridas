@@ -41,7 +41,7 @@ warnings.filterwarnings("ignore")
 
 # establecer algunas configuraciones predefinidas para la página, como el título de la página, el ícono del logotipo, el estado de carga de la página (si la página se carga automáticamente o si necesita realizar alguna acción para cargar)
 st.set_page_config(
-    page_title="Reconocimiento de Flores",
+    page_title="Reconocimiento de heridas o suturas de cirugia de corazon abierto",
     page_icon = ":smile:",
     initial_sidebar_state = 'auto'
 )
@@ -68,13 +68,13 @@ with st.spinner('Modelo está cargando..'):
 
 
 with st.sidebar:
-        st.image('heridas.jpg')
+        st.image('corazon3.jpg')
         st.title("Identificación de Heridas o suturas Alteradas")
         st.subheader("Reconocimiento de imagen para heridas o sutura de cirugia de corazón abierto")
-        confianza = st.slider("Nivel de confianza esperado?", 0, 1, 0.1)
+        confianza = st.slider("Nivel de confianza esperado?", 0.0, 1.0, 0.1)
 
-st.image('logo.png')
-st.title("Smart Regions Center")
+st.image('corazon.jpg')
+st.title("Inteligencia Artificial")
 st.write("Somos un equipo apasionado de profesionales dedicados a hacer la diferencia")
 st.write("""
          # Reconocimiento de Imagen para heridas o sutura de corazón abierto
@@ -92,14 +92,16 @@ def import_and_predict(image_data, model, class_names):
     
     # Predecir con el modelo
     prediction = model.predict(image)
-    index = np.argmax(prediction)
-    score = tf.nn.softmax(prediction[0])
-    class_name = class_names[index]
+    # Interpretar la predicción
+    if prediction[0] > 0.5:
+        class_name='Alterada'
+    else:
+        class_name='No_alterada'
     
-    return class_name, score
+    return class_name, prediction[0] 
 
 
-class_names = open("./clases.txt", "r").readlines()
+class_names = open("./model/clases.txt", "r").readlines()
 
 img_file_buffer = st.camera_input("Capture una foto referiblemente centrada en la herida o sutura")
 if img_file_buffer is None:
@@ -115,7 +117,7 @@ else:
 
     if np.max(score)>confianza:
         st.header(f"Estado de la sutura: {class_name}")
-        st.subheader(f"Puntuación de confianza: {100 * np.max(score):.2f}%")
+        st.subheader(f"Puntuación de confianza: {100 * np.max(score) :.2f}%")
     else:
-        st.subheader(f"El estado de la sutura no se pudo identificar")
+        st.subheader(f"Con el nivel de confianza {confianza:.2f}% no podria identificar el estado de la sutura")
         
