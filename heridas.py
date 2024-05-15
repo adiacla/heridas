@@ -58,9 +58,9 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True) # Oculta el código CS
 
 #st.set_option('deprecation.showfileUploaderEncoding', False)
 
-#@st.cache_resource
+@st.cache_resource
 def load_model():
-    model=tf.keras.models.load_model('model/heridas_model.h5')
+    model=tf.keras.models.load_model('heridas_model.h5')
     return model
 with st.spinner('Modelo está cargando..'):
     model=load_model()
@@ -71,7 +71,7 @@ with st.sidebar:
         st.image('corazon3.jpg')
         st.title("Identificación de Heridas o suturas Alteradas")
         st.subheader("Reconocimiento de imagen para heridas o sutura de cirugia de corazón abierto")
-        confianza = st.slider("Nivel de confianza esperado?", 0.0, 1.0, 0.1)
+        confianza = st.slider("Nivel de confianza esperado?", 0.0, 1.0, 0.5,0.1)
 
 st.image('corazon.jpg')
 st.title("Inteligencia Artificial")
@@ -82,9 +82,8 @@ st.write("""
          )
 
 
-def import_and_predict(image_data, model, class_names):
+def import_and_predict(image_data, model):
     image_data = image_data.resize((180, 180))
-    
     img_array = tf.keras.utils.img_to_array(image_data)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch
 
@@ -99,17 +98,15 @@ def import_and_predict(image_data, model, class_names):
     return class_name, prediction[0][0] 
 
 
-class_names = open("./model/clases.txt", "r").readlines()
-
 img_file_buffer = st.camera_input("Capture una foto referiblemente centrada en la herida o sutura")
 if img_file_buffer is None:
     st.text("Por favor tome una foto")
 else:
     image = Image.open(img_file_buffer)
-    st.image(image, use_column_width=True)
-    
+    #st.image(image, use_column_width=True)
+   
     # Realizar la predicción
-    class_name, score = import_and_predict(image, model, class_names)
+    class_name, score = import_and_predict(image, model)
     
     # Mostrar el resultado
 
@@ -117,5 +114,5 @@ else:
         st.header(f"Estado de la sutura: {class_name}")
         st.subheader(f"Puntuación de confianza: {100 * score :.2f}%")
     else:
-        st.subheader(f"Con el nivel de confianza {confianza:.2f}% no podria identificar el estado de la sutura")
+        st.subheader(f"Con el nivel de confianza mayor {100*confianza:.2f}% no podria identificar el tipo de foto o estado de la sutura")
         
