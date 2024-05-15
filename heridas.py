@@ -78,6 +78,8 @@ st.title("Inteligencia Artificial")
 st.write("Somos un equipo apasionado de profesionales dedicados a hacer la diferencia")
 st.write("""
          # Reconocimiento de Imagen para heridas o sutura de corazón abierto
+         Md Dr. Javier Armando Rodríguez Investigador
+         MsC Alfredo Díaz- Docente
          """
          )
 
